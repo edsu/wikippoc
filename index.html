@@ -1,0 +1,36 @@
+<!doctype html>
+
+<html>
+    <head>
+        <title>LC Prints and Photographs Wikipedia Image Infobox Generator</title>
+        <link rel="stylesheet" href="css/main.css" type='text/css'>
+        <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+        <script src="js/wikippoc.js"></script>
+        <script>
+
+            function lookup() {
+              var ppocUrl = $("#ppocUrl").attr("value");
+              wikippoc(ppocUrl, function(pic) {
+                var ppoc = $('<div id="ppoc">')
+                  .append('<a target="_new" href="' + pic.link + '"><img src="'+ pic.thumb_gallery + '"></a>')
+                  .append("<br><span class='title'>" + pic.title + "</span>");
+                $("#ppoc").replaceWith(ppoc);
+                $("#wikitext").text(pic.wikitext);
+              });
+            }
+
+            $(document).ready(lookup);
+        </script>
+    </head>
+
+    <body>
+        <header>LC Prints and Photographs Wikipedia Image Infobox Generator</header>
+        <form action="javascript:lookup()">
+            <div id="ppoc"></div>
+            <input id="ppocUrl" type="url" size="40" value="http://www.loc.gov/pictures/item/2005681122/"/>
+            <input type="submit" value="generate" />
+            <div id="wikitext"></div>
+            </div>
+        </form>
+    </body>
+</html>
