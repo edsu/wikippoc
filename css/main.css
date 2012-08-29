@@ -47,7 +47,7 @@ form input {
 #wikitext {
     clear: both;
     margin-top: 25px;
-    border: thin solid #eeeeee;
+    border: 2px inset #cccccc;
     padding: 10px;
     text-align: left;
 }
