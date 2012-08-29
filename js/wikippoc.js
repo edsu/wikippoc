@@ -9,7 +9,7 @@ function wikippoc(url, callback) {
   $.ajax({url: jsonUrl, dataType: "jsonp", success: function(data) {
     var item = data.item;
 
-    // get the id, but strip off uncessary text
+    // get the id, but strip off unnecessary text
     var id = item.reproduction_number.split(" ")[0];
 
     // squash the creators down
