@@ -16,7 +16,7 @@ form {
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-    width: 475px;
+    width: 525px;
 }
 
 form input {
@@ -46,8 +46,9 @@ form input {
 
 #wikitext {
     clear: both;
-    margin-top: 25px;
+    margin-top: 50px;
     border: 2px inset #cccccc;
     padding: 10px;
     text-align: left;
+    word-wrap: break-word;
 }
