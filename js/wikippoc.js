@@ -18,8 +18,11 @@ function wikippoc(url, callback) {
     // the repository
     var repository = item.repository || "Library of Congress Prints and Photographs Division";
     
+    // get medium, but strip off numbers and capitalize for citation style
+    var medium = clean(item.medium_brief.replace(/^\d+\s/,"")).charAt(0).toUpperCase() + clean(item.medium_brief.replace(/^\d+\s/,"")).slice(1);
+
     // generate wikitext from the ppoc metadata
-    item.wikitext = '<ref group="image">{{User:Dominic/Cite|title=' + item.title + '|creator=' + creators + '|medium=' + clean(item.medium_brief) + '|id=' + id + '|url=' + item.link + '|repository=' + repository + '|date=' + clean(item.date) + '}}</ref>';
+    item.wikitext = '<ref group="image">{{User:Dominic/Cite|title=' + item.title + '|creator=' + creators + '|medium=' + medium + '|id=' + id + '|url=' + item.link + '|repository=' + repository + '|date=' + clean(item.date) + '}}</ref>';
     callback(item);
   }});
 }
