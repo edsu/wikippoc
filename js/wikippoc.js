@@ -5,7 +5,13 @@ function wikippoc(url, callback) {
   }
 
   // fetch json view for the ppoc item
-  var jsonUrl = url + "?fo=json";
+  if (url.split("/")[0] == "http:") {
+    var jsonUrl = url + "?fo=json";
+    }
+  else {
+    var jsonUrl = "http://www.loc.gov/pictures/resource/" + url + "/?fo=json";
+    }
+
   $.ajax({url: jsonUrl, dataType: "jsonp", success: function(data) {
     var item = data.item;
 
