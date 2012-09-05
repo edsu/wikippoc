@@ -5,7 +5,13 @@ function wikippoc(url, callback) {
   }
 
   // fetch json view for the ppoc item
-  var jsonUrl = url + "?fo=json";
+  if (url.split("/")[0] == "http:") {
+    var jsonUrl = url + "?fo=json";
+    }
+  else {
+    var jsonUrl = "http://www.loc.gov/pictures/resource/" + url + "/?fo=json";
+    }
+
   $.ajax({url: jsonUrl, dataType: "jsonp", success: function(data) {
     var item = data.item;
 
@@ -18,8 +24,11 @@ function wikippoc(url, callback) {
     // the repository
     var repository = item.repository || "Library of Congress Prints and Photographs Division";
     
+    // get medium, but strip off numbers and capitalize for citation style
+    var medium = clean(item.medium_brief.replace(/^\d+\s/,"")).charAt(0).toUpperCase() + clean(item.medium_brief.replace(/^\d+\s/,"")).slice(1);
+
     // generate wikitext from the ppoc metadata
-    item.wikitext = '<ref group="image">{{User:Dominic/Cite|title=' + item.title + '|creator=' + creators + '|medium=' + clean(item.medium_brief) + '|id=' + id + '|url=' + item.link + '|repository=' + repository + '|date=' + clean(item.date) + '}}</ref>';
+    item.wikitext = '<ref group="image">{{User:Dominic/Cite|title=' + item.title + '|creator=' + creators + '|medium=' + medium + '|id=' + id + '|url=' + item.link + '|repository=' + repository + '|date=' + clean(item.date) + '}}</ref>';
     callback(item);
   }});
 }
