@@ -12,7 +12,7 @@ function wikippoc(url, callback) {
 
   // figure out the json view URL for the ppoc item
   var jsonUrl = null;
-  if (url.match(/^http:\/\/www.loc.gov\/pictures\//)) {
+  if (url.match(/^http:\/\/(www\.)?loc.gov\/pictures\//)) {
     jsonUrl = url + "?fo=json";
   } else if (url.match(/^http:\/\/hdl.loc.gov\/loc.pnp\//)) {
     jsonUrl = "http://www.loc.gov/pictures/resource/" + url.match(/loc.pnp\/(.+)\/?$/)[1] + "/?fo=json";
@@ -26,6 +26,9 @@ function wikippoc(url, callback) {
     // get the id, but strip off unnecessary text
     var id = item.reproduction_number.split(" ")[0];
 
+    // get the handle url
+    var url = item.resource_links[0]; 
+
     // squash the creators down
     var creators = item.creators.map(function(c) {return c.title}).join(", ");
 
@@ -36,7 +39,7 @@ function wikippoc(url, callback) {
     var medium = clean(item.medium_brief.replace(/^\d+\s/,"")).charAt(0).toUpperCase() + clean(item.medium_brief.replace(/^\d+\s/,"")).slice(1);
 
     // generate wikitext from the ppoc metadata
-    item.wikitext = '<ref group="image">{{User:Dominic/Cite|title=' + item.title + '|creator=' + creators + '|medium=' + medium + '|id=' + id + '|url=' + item.link + '|repository=' + repository + '|date=' + clean(item.date) + '}}</ref>';
+    item.wikitext = '<ref group="image">{{User:Dominic/Cite|title=' + item.title + '|creator=' + creators + '|medium=' + medium + '|id=' + id + '|url=' + url + '|repository=' + repository + '|date=' + clean(item.date) + '}}</ref>';
     callback(item);
   }});
 }
