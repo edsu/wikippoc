@@ -1,16 +1,24 @@
+/*
+ * Get JSON metadata for a PPOC item
+ * @hint {String} either a PPOC url, handle or identifier
+ * @callback {Function} callback that receives the JavaScript object
+ */
+
 function wikippoc(url, callback) {
 
   function clean(s) {
     return s.replace(/ ?[.;:]$/, '');
   }
 
-  // fetch json view for the ppoc item
-  if (url.split("/")[0] == "http:") {
-    var jsonUrl = url + "?fo=json";
-    }
-  else {
-    var jsonUrl = "http://www.loc.gov/pictures/resource/" + url + "/?fo=json";
-    }
+  // figure out the json view URL for the ppoc item
+  var jsonUrl = null;
+  if (url.match(/^http:\/\/www.loc.gov\/pictures\//)) {
+    jsonUrl = url + "?fo=json";
+  } else if (url.match(/^http:\/\/hdl.loc.gov\/loc.pnp\//)) {
+    jsonUrl = "http://www.loc.gov/pictures/resource/" + url.match(/loc.pnp\/(.+)\/?$/)[1] + "/?fo=json";
+  } else {
+    jsonUrl = "http://www.loc.gov/pictures/resource/" + url + "/?fo=json";
+  }
 
   $.ajax({url: jsonUrl, dataType: "jsonp", success: function(data) {
     var item = data.item;
