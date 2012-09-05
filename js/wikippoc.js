@@ -32,8 +32,10 @@ function wikippoc(url, callback) {
     // squash the creators down
     var creators = item.creators.map(function(c) {return c.title}).join(", ");
 
-    // the repository
+    // the repository, trim off address if present
     var repository = item.repository || "Library of Congress Prints and Photographs Division";
+    var match = repository.match(/(.+) Washington/);
+    if (match) repository = match[1];
     
     // get medium, but strip off numbers and capitalize for citation style
     var medium = clean(item.medium_brief.replace(/^\d+\s/,"")).charAt(0).toUpperCase() + clean(item.medium_brief.replace(/^\d+\s/,"")).slice(1);
