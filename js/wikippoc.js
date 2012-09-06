@@ -51,7 +51,7 @@ function wikippoc(url, callback, fileNameOnCommons) {
                      '|repository=' + repository +
                      '|date=' + clean(item.date) +
                      (typeof fileNameOnCommons !== 'undefined' && fileNameOnCommons !== ''
-                      ? '|file=' + fileNameOnCommons
+                      ? '|file=' + fileNameOnCommons.split(":")[1]
                       : '') +
                      '}}</ref>');
     callback(item);
