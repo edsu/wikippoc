@@ -50,8 +50,9 @@ function wikippoc(url, callback, fileNameOnCommons) {
                      '|url=' + url +
                      '|repository=' + repository +
                      '|date=' + clean(item.date) +
-                     (typeof fileNameOnCommons !== 'undefined' && fileNameOnCommons !== ''
-                      ? '|file=' + fileNameOnCommons.split(":")[1]
+                     '|file=' +
+		      (typeof fileNameOnCommons !== 'undefined' && fileNameOnCommons !== ''
+                      ? fileNameOnCommons.split(":")[1]
                       : '') +
                      '}}</ref>');
     callback(item);
