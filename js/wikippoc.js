@@ -52,7 +52,9 @@ function wikippoc(url, callback, fileNameOnCommons) {
                      '|date=' + clean(item.date) +
                      '|file=' +
 		      (typeof fileNameOnCommons !== 'undefined' && fileNameOnCommons !== ''
+                      ? (typeof fileNameOnCommons.split(":")[1] !== 'undefined' && fileNameOnCommons.split(":")[1] !== ''
                       ? fileNameOnCommons.split(":")[1]
+                      : fileNameOnCommons)
                       : '') +
                      '}}</ref>');
     callback(item);
