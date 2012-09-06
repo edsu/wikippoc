@@ -2,9 +2,10 @@
  * Get JSON metadata for a PPOC item
  * @hint {String} either a PPOC url, handle or identifier
  * @callback {Function} callback that receives the JavaScript object
+ * @fileNameOnCommons {String} optional; file name of image on Commons
  */
 
-function wikippoc(url, callback) {
+function wikippoc(url, callback, fileNameOnCommons) {
 
   function clean(s) {
     return s.replace(/ ?[.;:]$/, '');
@@ -41,7 +42,18 @@ function wikippoc(url, callback) {
     var medium = clean(item.medium_brief.replace(/^\d+\s/,"")).charAt(0).toUpperCase() + clean(item.medium_brief.replace(/^\d+\s/,"")).slice(1);
 
     // generate wikitext from the ppoc metadata
-    item.wikitext = '<ref group="image">{{User:Dominic/Cite|title=' + item.title + '|creator=' + creators + '|medium=' + medium + '|id=' + id + '|url=' + url + '|repository=' + repository + '|date=' + clean(item.date) + '}}</ref>';
+    item.wikitext = ('<ref group="image">{{User:Dominic/Cite|title=' +
+                     item.title +
+                     '|creator=' + creators +
+                     '|medium=' + medium +
+                     '|id=' + id +
+                     '|url=' + url +
+                     '|repository=' + repository +
+                     '|date=' + clean(item.date) +
+                     (typeof fileNameOnCommons !== 'undefined' && fileNameOnCommons !== ''
+                      ? '|file=' + fileNameOnCommons
+                      : '') +
+                     '}}</ref>');
     callback(item);
   }});
 }
