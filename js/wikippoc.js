@@ -40,6 +40,16 @@ function wikippoc(url, callback, fileNameOnCommons) {
     
     // get medium, but strip off numbers and capitalize for citation style
     var medium = clean(item.medium_brief.replace(/^\d+\s/,"")).charAt(0).toUpperCase() + clean(item.medium_brief.replace(/^\d+\s/,"")).slice(1);
+    
+    // sanitize fileNameOnCommons if given; if not given, defaults to empty string
+    var cleanFileName = "";
+    if (typeof fileNameOnCommons !== 'undefined' && fileNameOnCommons !== '') {
+      if (fileNameOnCommons.search(/[\#\<\>\[\]\|\{\}]/) == -1) {
+        cleanFileName = fileNameOnCommons.replace(/^File:/, "");
+      } else {
+        cleanFileName = "<!-- Invalid file name provided! -->"
+      }
+    }
 
     // generate wikitext from the ppoc metadata
     item.wikitext = ('<ref group="image">{{User:Dominic/Cite|title=' +
@@ -50,12 +60,7 @@ function wikippoc(url, callback, fileNameOnCommons) {
                      '|url=' + url +
                      '|repository=' + repository +
                      '|date=' + clean(item.date) +
-                     '|file=' +
-		      (typeof fileNameOnCommons !== 'undefined' && fileNameOnCommons !== ''
-                      ? (typeof fileNameOnCommons.split(":")[1] !== 'undefined' && fileNameOnCommons.split(":")[1] !== ''
-                      ? fileNameOnCommons.split(":")[1]
-                      : fileNameOnCommons)
-                      : '') +
+                     '|file=' + cleanFileName +
                      '}}</ref>');
     callback(item);
   }});
