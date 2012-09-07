@@ -20,20 +20,39 @@
               return a;
             }();
             
+            var fileNameEnabled = true;
             $(document).ready(function() {
               if ("url" in args)
                 $("#ppocUrl").attr("value", args["url"]);
+              
+              if ("file" in args) {
+                $("#ppocFile").attr("value", args["file"]);
+                fileNameEnabled = true;
+              } else if ($("#ppocFile").attr("value") === "" ||
+                         $("#ppocFile").attr("value") === "(optional)") {
+                $("#ppocFile").focus(function () {
+                  $("#ppocFile").css("color", "");
+                  $("#ppocFile").attr("value", "");
+                  fileNameEnabled = true;
+                });
+                $("#ppocFile").css("color", "#999");
+                $("#ppocFile").attr("value", "(optional)");
+                fileNameEnabled = false;
+              }
             });
 
             function lookup() {
               var ppocUrl = $("#ppocUrl").attr("value");
+              var ppocFile = fileNameEnabled
+                           ? $("#ppocFile").attr("value")
+                           : undefined;
               wikippoc(ppocUrl, function(pic) {
                 var ppoc = $('<div id="ppoc">')
                   .append('<a target="_new" href="' + pic.link + '"><img src="'+ pic.thumb_gallery + '"></a>')
                   .append("<br><span class='title'>" + pic.title + "</span>");
                 $("#ppoc").replaceWith(ppoc);
                 $("#wikitext").text(pic.wikitext);
-              });
+              }, ppocFile);
             }
 
             $(document).ready(lookup);
@@ -45,8 +64,8 @@
         <a id="github" href="http://github.com/edsu/wikippoc"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 3;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
         <form action="javascript:lookup()">
             <div id="ppoc"></div>
-            <p>Enter a URL or LC Digital ID below:</p>
-            <input id="ppocUrl" type="text" size="50" value="http://www.loc.gov/pictures/resource/cph.3c13276/">
+            URL or LC Digital ID: <input id="ppocUrl" type="text" size="50" value="http://www.loc.gov/pictures/resource/cph.3c13276/"><br/>
+            Commons file name:&nbsp; <input id="ppocFile" type="text" size="50" value=""><br/>
             <input type="submit" value="generate">
             <div id="wikitext"></div>
             </div>
